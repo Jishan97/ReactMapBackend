@@ -53,6 +53,7 @@ router.post(
   }
 );
 
+
 // @route GET api/clinic/allClinic
 // @desc Retrive all clinics from database
 // @access Private

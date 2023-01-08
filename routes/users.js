@@ -16,6 +16,8 @@ const validateLoginInput = require('../validation/login');
 // Load User model
 const User = require('../models/User');
 const Clinic = require('../models/Clinic');
+const Report = require('../models/Report');
+
 
 // @route POST api/users/register
 // @desc Register user
@@ -115,7 +117,8 @@ router.post('/register', (req, res) => {
             });
           });
         });
-        
+      
+
         // @route GET api/users/current
         // @desc Return current user
         // @access Private
@@ -211,6 +214,44 @@ router.get(
   }
 );
 
+
+router.get(
+  "/allReports",
+  //   passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    try {
+      // if(req.user.level === 1) {
+      const data = await Report.find({});
+      res.json(data);
+      // } else {
+      // return res.status(400).json({msg:"Unauthorized"});
+
+      // }
+    } catch (error) {
+      console.log(error);
+      return res.status(401).json({ msg: "something went wrong" });
+    }
+  }
+);
+
+
+router.get(
+  "/bookingByUser/:id",
+  //   passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    try {
+      // if(req.user.level === 1) {
+      const data = await User.find({_id:req.params.id});
+      res.json(data[0].bookings);
+      // } else {
+      // return res.status(400).json({msg:"Unauthorized"});
+      // }
+    } catch (error) {
+      console.log(error);
+      return res.status(401).json({ msg: "something went wrong" });
+    }
+  }
+);
         
         
         module.exports = router;
